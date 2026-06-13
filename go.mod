@@ -1,6 +1,6 @@
 module github.com/Shashank0701-byte/Loadster
 
-go 1.26.4
+go 1.26.0
 
 require (
 	github.com/charmbracelet/bubbletea v1.3.10
