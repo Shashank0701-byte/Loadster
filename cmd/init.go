@@ -38,7 +38,7 @@ var initCmd = &cobra.Command{
 
 		fmt.Printf("✅ Successfully created '%s'!\n", filename)
 		fmt.Printf("👉 Next step: Run your load test with:\n")
-		fmt.Println("   loadster run test_scenario.yaml\n")
+		fmt.Println("   loadster run test_scenario.yaml")
 	},
 }
 
