@@ -163,7 +163,7 @@ func (d *Dashboard) View() string {
 		labelStyle.Render("Total Requests:"), valStyle.Render(fmt.Sprintf("%d", stats.TotalRequests)),
 		labelStyle.Render("Errors/Failures:"), dangerStyle.Render(fmt.Sprintf("%d", stats.TotalErrors)),
 		labelStyle.Render("Success Rate:"), successRateColor.Render(fmt.Sprintf("%.2f%%", stats.SuccessRate)),
-		labelStyle.Render("Average Latency:"), valStyle.Render(fmt.Sprintf("%s", stats.Average.Round(time.Millisecond))),
+		labelStyle.Render("Average Latency:"), valStyle.Render(stats.Average.Round(time.Millisecond).String()),
 		labelStyle.Render("Percentiles:"), valStyle.Render(fmt.Sprintf("P50: %s | P95: %s | P99: %s",
 			stats.P50.Round(time.Millisecond),
 			stats.P95.Round(time.Millisecond),
