@@ -1,0 +1,46 @@
+# Default values for loadster.
+# This is a YAML-formatted file.
+
+image:
+  repository: ghcr.io/shashank0701-byte/loadster
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+master:
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+worker:
+  replicaCount: 0  # Typically scaled dynamically by the master node during load testing
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+service:
+  type: ClusterIP
+  port: 9090
+
+serviceMonitor:
+  enabled: true
+  interval: 10s
+  path: /metrics
