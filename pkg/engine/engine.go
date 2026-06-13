@@ -11,14 +11,22 @@ import (
 	"go.uber.org/zap"
 )
 
+// StageChangeEvent represents a transition to a new stage in the load test.
+type StageChangeEvent struct {
+	StageNum    int
+	TargetUsers int
+	Duration    time.Duration
+}
+
 // Engine orchestrates the load test stages and worker pool lifecycle.
 type Engine struct {
-	cfg         *config.Config
-	client      *http.Client
-	resultsChan chan Result
-	activeVUs   int
-	vuMutex     sync.Mutex
-	workerWg    sync.WaitGroup
+	cfg           *config.Config
+	client        *http.Client
+	resultsChan   chan Result
+	activeVUs     int
+	vuMutex       sync.Mutex
+	workerWg      sync.WaitGroup
+	OnStageChange func(StageChangeEvent)
 }
 
 // NewEngine creates a new Engine instance.
@@ -65,8 +73,6 @@ func (e *Engine) Run(ctx context.Context) error {
 			cancel()
 		}
 
-		// Start the background routine to wait for all workers to exit and close the results channel safely.
-		// We start this only during cleanup to prevent it from executing prematurely when the worker list is empty.
 		go func() {
 			e.workerWg.Wait()
 			close(e.resultsChan)
@@ -74,7 +80,6 @@ func (e *Engine) Run(ctx context.Context) error {
 			close(resultsCloseDone)
 		}()
 
-		// Block returning until all worker goroutines have fully exited and resultsChan is closed.
 		<-resultsCloseDone
 	}()
 
@@ -90,6 +95,14 @@ func (e *Engine) Run(ctx context.Context) error {
 			zap.Int("target_users", stage.Users),
 			zap.String("duration", stage.RawDuration),
 		)
+
+		if e.OnStageChange != nil {
+			e.OnStageChange(StageChangeEvent{
+				StageNum:    i + 1,
+				TargetUsers: stage.Users,
+				Duration:    stage.Duration,
+			})
+		}
 
 		stageStart := time.Now()
 		stageDuration := stage.Duration

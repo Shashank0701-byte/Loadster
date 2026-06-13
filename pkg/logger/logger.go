@@ -31,4 +31,23 @@ func InitLogger(debug bool) error {
 	zap.ReplaceGlobals(Log)
 	return nil
 }
+
+// InitFileLogger re-initializes the global logger to write to a log file instead of stdout.
+// This is essential to prevent standard log outputs from disrupting the BubbleTea terminal UI.
+func InitFileLogger(filename string) error {
+	config := zap.NewProductionConfig()
+	config.EncoderConfig.TimeKey = "timestamp"
+	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	config.OutputPaths = []string{filename}
+
+	var err error
+	Log, err = config.Build()
+	if err != nil {
+		return err
+	}
+
+	zap.ReplaceGlobals(Log)
+	return nil
+}
 type Log_Type = *zap.Logger // For linking symbol reference
+type InitFileLogger_Type = func(string) error // For linking symbol reference
