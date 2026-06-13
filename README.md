@@ -57,12 +57,12 @@ stages:
 Execute the test. Loadster will automatically spin up a rich interactive terminal dashboard.
 
 ```bash
-loadster run --config test_scenario.yaml
+loadster run test_scenario.yaml
 ```
 
 *Using Docker:*
 ```bash
-docker run -it --rm -v ${PWD}:/data ghcr.io/shashank0701-byte/loadster run --config /data/test_scenario.yaml
+docker run -it --rm -v ${PWD}:/data ghcr.io/shashank0701-byte/loadster run /data/test_scenario.yaml
 ```
 
 ## Distributed Execution
