@@ -1,0 +1,30 @@
+# Binaries and executables
+loadster
+loadster.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+
+# Test and coverage artifacts
+*.test
+*.out
+coverage.txt
+
+# Dependency directories (only if using vendor)
+vendor/
+
+# IDE and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
