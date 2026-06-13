@@ -1,0 +1,1 @@
+A simple CLI tool for load testing by mimicking the load users and testing the performance of the application under load. 
